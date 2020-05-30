@@ -1,7 +1,10 @@
-﻿using Projeto.Repository.SqlServer.Contracts;
+﻿using Dapper;
+using Projeto.Repository.SqlServer.Contracts;
 using Projeto.Repository.SqlServer.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 
 namespace Projeto.Repository.SqlServer.Repositories
@@ -22,7 +25,13 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <param name="obj">Parametro do tipo do objeto esperado</param>
         public void Alterar(Estoque obj)
         {
-            throw new NotImplementedException();
+            var query = "update Estoque set Nome = @Nome, Descricao = @Descricao" +
+                "where IdEstoque = @IdEstoque";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Execute(query, obj);
+            }
         }
 
         /// <summary>
@@ -31,7 +40,13 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <returns>Retorna a lista de estoque</returns>
         public List<Estoque> Consultar()
         {
-            throw new NotImplementedException();
+            var query = "select * from Estoque";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                return connection.Query<Estoque>(query)
+                    .ToList();
+            }
         }
 
         /// <summary>
@@ -40,7 +55,12 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <param name="obj">Valor do tipo do objeto estoque</param>
         public void Excluir(Estoque obj)
         {
-            throw new NotImplementedException();
+            var query = "delete from Estoque where IdEstoque = @IdEstoque";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Execute(query, obj);
+            }
         }
 
         /// <summary>
@@ -49,16 +69,27 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <param name="obj">valor do parametro do banco de dados</param>
         public void Inserir(Estoque obj)
         {
-            throw new NotImplementedException();
+            var query = "insert into Estoque (Nome, Descricao)" +
+                "values (@Nome, @Descricao)";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Execute(query, obj);
+            }
         }
 
         /// <summary>
         /// Método de obter um registro do banco por id
         /// </summary>
         /// <param name="obj">Tipo recebido do objeto estoque</param>
-        public void ObterPorId(Estoque obj)
+        public Estoque ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            var query = "select * from Estoque where IdEstoque = @IdEstoque";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                return connection.Query<Estoque>(query, new {IdEstoque = id }).FirstOrDefault();
+            }
         }
     }
 }

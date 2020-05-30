@@ -1,7 +1,10 @@
-﻿using Projeto.Repository.SqlServer.Contracts;
+﻿using Dapper;
+using Projeto.Repository.SqlServer.Contracts;
 using Projeto.Repository.SqlServer.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 
 namespace Projeto.Repository.SqlServer.Repositories
@@ -22,7 +25,13 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <param name="obj">variavel do tipo produto</param>
         public void Alterar(Produto obj)
         {
-            throw new NotImplementedException();
+            var query = "update Produto set Nome = @Nome, Preco = @Preco, Quantidade = @Quantidade" +
+                "where IdProduto = @IdProduto";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Execute(query, obj);
+            }
         }
 
         /// <summary>
@@ -31,7 +40,13 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <returns>retorna a consulta</returns>
         public List<Produto> Consultar()
         {
-            throw new NotImplementedException();
+            var query = "select * from Produto";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                return connection.Query<Produto>(query)
+                    .ToList();
+            }
         }
 
         /// <summary>
@@ -40,7 +55,12 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <param name="obj">variavel do tipo produto</param>
         public void Excluir(Produto obj)
         {
-            throw new NotImplementedException();
+            var query = "delete from Produto where IdProduto = @IdProduto";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Execute(query, obj);
+            }
         }
 
         /// <summary>
@@ -49,16 +69,27 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <param name="obj">variavel do tipo produto</param>
         public void Inserir(Produto obj)
         {
-            throw new NotImplementedException();
+            var query = "insert into Produto (Nome, Preço, Quantidade)" +
+                "values (@Nome, @Preco, @Quantidade)";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Execute(query, obj);
+            }
         }
 
         /// <summary>
         /// Metodo que faz a uma busca por Id no banco de dados com dapper
         /// </summary>
         /// <param name="obj">variavel do tipo produto</param>
-        public void ObterPorId(Produto obj)
+        public Produto ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            var query = "select * from Produto where IdProduto = @IdProduto";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                return connection.Query<Produto>(query, new { IdProduto = id }).FirstOrDefault();
+            }
         }
     }
 }

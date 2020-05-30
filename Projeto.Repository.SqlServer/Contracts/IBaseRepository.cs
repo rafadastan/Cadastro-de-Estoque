@@ -18,6 +18,6 @@ namespace Projeto.Repository.SqlServer.Contracts
         void Alterar(T obj);
         void Excluir(T obj);
         List<T> Consultar();
-        void ObterPorId(T obj);
+        T ObterPorId(int id);
     }
 }
