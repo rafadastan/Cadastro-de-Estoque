@@ -12,5 +12,10 @@ namespace Projeto.Presentation.Mvc.Controllers
         {
             return View();
         }
+
+        public IActionResult Cadastro()
+        {
+            return View();
+        }
     }
 }

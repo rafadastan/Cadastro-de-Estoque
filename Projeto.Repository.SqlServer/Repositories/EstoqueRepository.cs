@@ -19,13 +19,18 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// </summary>
         private string connectionString;
 
+        public EstoqueRepository(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
+
         /// <summary>
         /// Método que alterar um registro do banco de dados
         /// </summary>
         /// <param name="obj">Parametro do tipo do objeto esperado</param>
         public void Alterar(Estoque obj)
         {
-            var query = "update Estoque set Nome = @Nome, Descricao = @Descricao" +
+            var query = "update Estoque set Nome = @Nome, DataCriacao = @DataCriacao" +
                 "where IdEstoque = @IdEstoque";
 
             using (var connection = new SqlConnection(connectionString))
@@ -69,8 +74,8 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <param name="obj">valor do parametro do banco de dados</param>
         public void Inserir(Estoque obj)
         {
-            var query = "insert into Estoque (Nome, Descricao)" +
-                "values (@Nome, @Descricao)";
+            var query = "insert into Estoque (Nome, DataCriacao)" +
+                "values (@Nome, @DataCriacao)";
 
             using (var connection = new SqlConnection(connectionString))
             {

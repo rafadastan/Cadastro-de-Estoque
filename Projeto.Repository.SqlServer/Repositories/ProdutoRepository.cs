@@ -19,13 +19,19 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// </summary>
         private string connectionString;
 
+        public ProdutoRepository(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
+
+
         /// <summary>
         /// Metodo que faz a alteração no banco de dados com dapper
         /// </summary>
         /// <param name="obj">variavel do tipo produto</param>
         public void Alterar(Produto obj)
         {
-            var query = "update Produto set Nome = @Nome, Preco = @Preco, Quantidade = @Quantidade" +
+            var query = "update produto set Nome = @Nome, Preco = @Preco, Quantidade = @Quantidade" +
                 "where IdProduto = @IdProduto";
 
             using (var connection = new SqlConnection(connectionString))
@@ -40,7 +46,7 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <returns>retorna a consulta</returns>
         public List<Produto> Consultar()
         {
-            var query = "select * from Produto";
+            var query = "select * from produto";
 
             using (var connection = new SqlConnection(connectionString))
             {
@@ -55,7 +61,7 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <param name="obj">variavel do tipo produto</param>
         public void Excluir(Produto obj)
         {
-            var query = "delete from Produto where IdProduto = @IdProduto";
+            var query = "delete from produto where IdProduto = @IdProduto";
 
             using (var connection = new SqlConnection(connectionString))
             {
@@ -69,7 +75,7 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <param name="obj">variavel do tipo produto</param>
         public void Inserir(Produto obj)
         {
-            var query = "insert into Produto (Nome, Preço, Quantidade)" +
+            var query = "insert into produto (Nome, Preço, Quantidade)" +
                 "values (@Nome, @Preco, @Quantidade)";
 
             using (var connection = new SqlConnection(connectionString))
@@ -84,7 +90,7 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <param name="obj">variavel do tipo produto</param>
         public Produto ObterPorId(int id)
         {
-            var query = "select * from Produto where IdProduto = @IdProduto";
+            var query = "select * from produto where IdProduto = @IdProduto";
 
             using (var connection = new SqlConnection(connectionString))
             {
