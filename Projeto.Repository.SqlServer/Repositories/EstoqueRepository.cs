@@ -31,7 +31,7 @@ namespace Projeto.Repository.SqlServer.Repositories
         public void Alterar(Estoque obj)
         {
             var query = "update Estoque set Nome = @Nome, DataCriacao = @DataCriacao" +
-                "where IdEstoque = @IdEstoque";
+                " where IdEstoque = @IdEstoque";
 
             using (var connection = new SqlConnection(connectionString))
             {

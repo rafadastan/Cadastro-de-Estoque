@@ -17,7 +17,7 @@ namespace Projeto.Presentation.Mvc.Controllers
         }
 
         [HttpPost]
-        public IActionResult Consulta(EstoqueConsultaModel model, 
+        public IActionResult Consulta(EstoqueConsultaModel model,
             [FromServices] EstoqueRepository estoqueRepository)
         {
             if (ModelState.IsValid)
@@ -64,7 +64,7 @@ namespace Projeto.Presentation.Mvc.Controllers
             return View();
         }
 
-        public IActionResult Exclusao(int id, 
+        public IActionResult Exclusao(int id,
             [FromServices] EstoqueRepository estoqueRepository)
         {
             try
@@ -84,6 +84,55 @@ namespace Projeto.Presentation.Mvc.Controllers
             return RedirectToAction("Consulta");
         }
 
+        public IActionResult Edicao(int id,
+            [FromServices] EstoqueRepository estoqueRepository)
+        {
+            var estoqueEdicaoModel = new EstoqueEdicaoModel();
+            try
+            {
+                var estoque = estoqueRepository.ObterPorId(id);
+                if (estoque != null)
+                {
+                    estoqueEdicaoModel.IdEstoque = estoque.IdEstoque;
+                    estoqueEdicaoModel.Nome = estoque.Nome;
+                    estoqueEdicaoModel.DataCriacao = estoque.DataCriacao.ToString("dd/MM/yyyy");
+                }
+                else
+                {
+                    TempData["MensagemErro"] = "Funcionário não encontrado";
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["MensagemErro"] = "Erro: " + e.Message;
+            }
+            return View(estoqueEdicaoModel);
+        }
 
+        [HttpPost]
+        public IActionResult Edicao(EstoqueEdicaoModel model,
+            [FromServices] EstoqueRepository estoqueRepository)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var estoque = new Estoque();
+
+                    estoque.IdEstoque = model.IdEstoque;
+                    estoque.Nome = model.Nome;
+                    estoque.DataCriacao = DateTime.Parse(model.DataCriacao);
+
+                    estoqueRepository.Alterar(estoque);
+
+                    TempData["MensagemSucesso"] = "Estoque alterado com sucesso!";
+                }
+                catch (Exception e)
+                {
+                    TempData["MensagemErro"] = "Erro: " + e.Message;
+                }
+            }
+            return View();
+        }
     }
 }
