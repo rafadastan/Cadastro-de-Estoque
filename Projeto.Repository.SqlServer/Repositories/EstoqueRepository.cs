@@ -45,12 +45,22 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <returns>Retorna a lista de estoque</returns>
         public List<Estoque> Consultar()
         {
-            var query = "select * from Estoque";
+            var query = "select * from Estoque order by Nome";
 
             using (var connection = new SqlConnection(connectionString))
             {
                 return connection.Query<Estoque>(query)
                     .ToList();
+            }
+        }
+
+        public List<Estoque> Consultar(string nome)
+        {
+            var query = "select * from Estoque where Nome like @Nome order by Nome";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                return connection.Query<Estoque>(query, new { Nome = "%" + nome + "%" }).ToList();
             }
         }
 

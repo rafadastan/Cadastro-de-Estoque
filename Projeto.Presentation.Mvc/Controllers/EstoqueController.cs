@@ -16,6 +16,24 @@ namespace Projeto.Presentation.Mvc.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Consulta(EstoqueConsultaModel model, 
+            [FromServices] EstoqueRepository estoqueRepository)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    model.Estoques = estoqueRepository.Consultar(model.Nome);
+                }
+                catch (Exception e)
+                {
+                    TempData["MensagemErro"] = "Erro: " + e.Message;
+                }
+            }
+            return View(model);
+        }
+
         public IActionResult Cadastro()
         {
             return View();
@@ -45,5 +63,27 @@ namespace Projeto.Presentation.Mvc.Controllers
             }
             return View();
         }
+
+        public IActionResult Exclusao(int id, 
+            [FromServices] EstoqueRepository estoqueRepository)
+        {
+            try
+            {
+                var estoque = estoqueRepository.ObterPorId(id);
+                if (estoque != null)
+                {
+                    estoqueRepository.Excluir(estoque);
+                    TempData["MensagemSucesso"] = "Estoque excluído com sucesso!";
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["MensagemErro"] = "Erro: " + e.Message;
+            }
+
+            return RedirectToAction("Consulta");
+        }
+
+
     }
 }

@@ -46,11 +46,22 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <returns>retorna a consulta</returns>
         public List<Produto> Consultar()
         {
-            var query = "select * from produto";
+            var query = "select * from produto order by Nome";
 
             using (var connection = new SqlConnection(connectionString))
             {
                 return connection.Query<Produto>(query)
+                    .ToList();
+            }
+        }
+
+        public List<Produto> Consultar(string nome)
+        {
+            var query = "select * from produto where Nome like @Nome order by Nome";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                return connection.Query<Produto>(query, new { Nome = "%" + nome + "%"})
                     .ToList();
             }
         }

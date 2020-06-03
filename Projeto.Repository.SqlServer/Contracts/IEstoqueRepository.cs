@@ -10,6 +10,6 @@ namespace Projeto.Repository.SqlServer.Contracts
     /// </summary>
     public interface IEstoqueRepository : IBaseRepository<Estoque>
     {
-
+        List<Estoque> Consultar(string nome);
     }
 }

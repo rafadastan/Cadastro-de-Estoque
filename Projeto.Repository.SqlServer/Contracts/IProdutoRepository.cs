@@ -10,6 +10,6 @@ namespace Projeto.Repository.SqlServer.Contracts
     /// </summary>
     public interface IProdutoRepository : IBaseRepository<Produto>
     {
-
+        List<Produto> Consultar(string nome);
     }
 }
