@@ -86,7 +86,7 @@ namespace Projeto.Repository.SqlServer.Repositories
         /// <param name="obj">variavel do tipo produto</param>
         public void Inserir(Produto obj)
         {
-            var query = "insert into produto (Nome, Preço, Quantidade)" +
+            var query = "insert into produto (Nome, Preco, Quantidade)" +
                 "values (@Nome, @Preco, @Quantidade)";
 
             using (var connection = new SqlConnection(connectionString))
